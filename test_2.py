@@ -39,3 +39,17 @@ book3_words = [nltk.word_tokenize(" ".join(each_doc).lower()) for each_doc in sa
 #initializing stopwords
 stop_words = stopwords.words("english")
 
+cleaned_book1 = book1_words
+cleaned_book2 = book2_words
+cleaned_book3 = book3_words
+iterator_for_clean_books = [cleaned_book1, cleaned_book2, cleaned_book3]
+for each_book in iterator_for_clean_books:
+    for each_list in each_book:
+        for each_item in each_list:
+            if each_item in stop_words:
+                each_list.remove(each_item)
+print (len(cleaned_book1[0]))
+print ("\n")
+print (len(cleaned_book2[0]))
+print ("\n")
+print ((cleaned_book3[0]))
