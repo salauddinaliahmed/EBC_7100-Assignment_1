@@ -1,3 +1,6 @@
+import nltk
+nltk.download('gutenberg')
+
 from nltk.corpus import gutenberg
 import random
 import nltk
