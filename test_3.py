@@ -1,5 +1,6 @@
 import nltk
 nltk.download('gutenberg')
+nltk.download('punkt')
 
 from nltk.corpus import gutenberg
 import random
