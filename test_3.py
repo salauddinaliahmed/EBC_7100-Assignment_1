@@ -1,6 +1,7 @@
 import nltk
 nltk.download('gutenberg')
 nltk.download('punkt')
+nltk.download('stopwords')
 
 from nltk.corpus import gutenberg
 import random
