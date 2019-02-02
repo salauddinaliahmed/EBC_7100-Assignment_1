@@ -1,0 +1,88 @@
+# -*- coding: utf-8 -*-
+"""
+Spyder Editor
+
+This is a temporary script file.
+"""
+import nltk
+nltk.download('gutenberg')
+nltk.download('punkt')
+nltk.download('stopwords')
+from sklearn.feature_extraction.text import TfidfVectorizer
+import pandas as pd
+
+
+from nltk.corpus import gutenberg
+import random
+import nltk
+from nltk.corpus import stopwords
+from sklearn.feature_extraction.text import CountVectorizer
+
+book_1 = gutenberg.raw('bible-kjv.txt').lower()
+book_2 = gutenberg.raw('melville-moby_dick.txt').lower()
+book_3 = gutenberg.raw('edgeworth-parents.txt').lower()
+dict_labels = {'KJV (Bible)': book_1, 'Herman Melville (Moby-Dick)' : book_2, 'Richard Lovell Edgeworth (Parents)' : book_3}
+master_list = []
+size_of_books = []
+# Dividing each book into documents of 30 sentences. appending them to *master_list*. 
+for author, book in dict_labels.items():
+    n = 0;
+    book = nltk.sent_tokenize(book)
+    limit = int(len(book)/31)
+    size_of_books.append(limit)
+    for i in range(limit):
+        master_list.append(book[n:n+30])
+        n+=31 
+
+#Dividing the master list into 3 seperate books.
+complete_book_1 = master_list[0:size_of_books[0]-1]
+complete_book_2 = master_list[961:1278]       
+complete_book_3 = master_list[1278:-1]
+#Printing total number of documents in each book.
+total_sample = [complete_book_1, complete_book_2, complete_book_3]
+for i in total_sample:
+    print ("Total number of documents in each book are", len(i))
+
+#Preprocessing the data, by taking 150 top frequency words excluding the stop words from each document. 
+#Random Sampling 200 documents from each book. 
+sample_book1 = random.sample(complete_book_1, 200)
+sample_book2 = random.sample(complete_book_2, 200)
+sample_book3 = random.sample(complete_book_3, 200)
+book1_words = [nltk.word_tokenize(" ".join(each_doc)) for each_doc in sample_book1]
+book2_words = [nltk.word_tokenize(" ".join(each_doc)) for each_doc in sample_book2]
+book3_words = [nltk.word_tokenize(" ".join(each_doc)) for each_doc in sample_book3]
+stop_words = stopwords.words("english")
+
+bow_vectorizer = CountVectorizer(lowercase=False)
+tfidf_vectorizer = TfidfVectorizer(lowercase=False)
+#clean book 1
+clean_book1_words = []
+for each_list in book1_words:
+        clean_book1_words.append(([each_word for each_word in each_list if not each_word in stop_words if each_word.isalpha()], 'KJV (Bible)'))
+print (clean_book1_words[0])
+
+#clean book 2
+clean_book2_words = []
+for each_list in book2_words:
+        #print (type(each_list))
+        clean_book2_words.append([each_word for each_word in each_list if not each_word in stop_words if each_word.isalpha()])
+        
+
+TFIDF = tfidf_vectorizer.fit_transform(str(each_doc) for each_doc in clean_book1_words)
+feature_names = tfidf_vectorizer.get_feature_names()
+tfidf_df = TFIDF.todense()
+print(tfidf_df)
+    
+#BOW = bow_vectorizer.fit_transform(each_list)
+#corpus_index_bow = [n for n in each_list]
+#feature_names = bow_vectorizer.get_feature_names()
+#bow_df = pd.DataFrame(BOW.T.todense(), index=feature_names, columns=corpus_index_bow)
+   # print(bow_df)
+    
+#print (clean_book2_words[0])
+
+#clean book 3
+clean_book3_words = []
+for each_list in book3_words:
+        clean_book3_words.append(([set(each_word for each_word in each_list if not each_word in stop_words if each_word.isalpha())], 'Richard Lovell Edgeworth (Parents)'))
+#print (clean_book3_words[1])
