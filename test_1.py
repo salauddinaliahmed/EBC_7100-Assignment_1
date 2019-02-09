@@ -8,7 +8,6 @@ bible = gutenberg.raw('bible-kjv.txt')
 parents = gutenberg.raw('edgeworth-parents.txt')
 author_list = {'Melville': moby_dick,'KJV': bible, 'Edgeworth':parents}
 temp_list = []
-<<<<<<< HEAD
 for author,book in author_list.items():
     n = 0  
     book_sent = nltk.sent_tokenize(book)
@@ -24,15 +23,7 @@ for author,book in author_list.items():
         else:
             break
 print (temp_list[598])
-=======
-key_name = moby_dick
-for i in range(200):
-    temp_string = str(moby_full[n:n+40]) + "|MOBY_DICK|"
-    temp_list.append(temp_string)
-    n += 41
-for each_item in temp_list:
-    print (each_item)
-    print ("\n")
+
     
     
     import nltk
@@ -72,4 +63,41 @@ random_sample_output = open("randomsample", "w", encoding='utf-8')
 random_sample_input = map(lambda x: x+"\n", random_sample_input)
 random_sample_output.writelines(random_sample_input)
 random_sample_output.close()
->>>>>>> ad8c6118b07b091dec7a28305b0d56e5f929b380
+
+# Final work from Sunday - 26th Jan
+
+
+import nltk
+import random
+from nltk.corpus import gutenberg
+
+files_en = gutenberg.fileids()      # Get file ids
+moby_dick = gutenberg.raw('melville-moby_dick.txt')
+bible = gutenberg.raw('bible-kjv.txt')
+parents = gutenberg.raw('edgeworth-parents.txt')
+author_list = {'Melville': moby_dick,'KJV': bible, 'Edgeworth':parents}
+temp_list = []
+with open("complete_book.txt", "w") as f:
+    for author,book in author_list.items():
+        n = 0  
+        book_sent = nltk.sent_tokenize(book)
+        print (type(book_sent))
+        doc_length = len(book_sent)
+    #print (author, "This is the number of senteces in the book", doc_length, book_sent[0])
+        parts = int(doc_length/200)
+    #print (author, "number of sentences in 1 document", parts)
+        for i in book_sent:
+            if len(temp_list) <= 200 or n <= doc_length:
+                #print (author, "line number, n ", n)
+                temp_string = str(book_sent[n:n+parts]) +"|"+author+"|"
+                temp_list.append(temp_string)
+                n = n+parts+1
+            else:
+                print (len(temp_list))
+                break
+        f.write(str(temp_list))
+f.close()
+same_file = open("complete_book.txt", 'r', encoding='utf-8')
+r = same_file.read()
+new_list += [x.replace("\n", " ").replace("  "," ").replace("''","") for x in temp_list]
+print (new_list[1:20])
