@@ -70,7 +70,8 @@ def learning_curve_graph(clf, word_vector):
              label="Training score")
     plt.plot(train_sizes, test_scores_mean, 'o-', color="g",
              label="Cross-validation score")
-
+    plt.xlabel("Sample Size")
+    plt.ylabel("Accuracy")
     plt.legend(loc="best")
     plt.show()
 
@@ -345,7 +346,7 @@ print ("-------------------------------")
 print ("===============================")
 print('cross-validation accuracy scores TFIDF SVM: %s' % svm_tfidf_scores)
 print('cross-validation accuracy: %.3f +/- %.3f' % (np.mean(svm_tfidf_scores), np.std(svm_tfidf_scores)))
-print ("Validation Curve for SVM BOW")
+print ("Validation Curve for SVM TFIDF")
 validation_curve_graph(tfidf_vector)
 print ("-------------------------------")
 print ("Learning Curve for SVM TFIDF")
@@ -513,4 +514,5 @@ plot_confusion_matrix(knn_bow_confu_mat, classes=target_names, normalize=True,
                     title='Normalized confusion matrix')
 
 plt.show()
+
 
