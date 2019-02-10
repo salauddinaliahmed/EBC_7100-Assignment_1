@@ -1,4 +1,4 @@
-# EBC_7100-Assignment_1
+# EBC 7100 Assignment 1
 Assignment 1 EBC 7100 text classification using supervised algorithms
 
 Authors:
