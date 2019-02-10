@@ -25,7 +25,7 @@ The code structure is as follows:
 Steps to execute the script:
 1. Install Python 3 (https://www.python.org/download/releases/3.0/) or use homebrew if you are a mac user
 2. Ensure Python 3 installed properly using the following command 
-3. istall -python
+3. install -python
 4. You should see the output as below:
 6. Download the "".py file to your local machine
 7. Open command prompt (Windows) or terminal (macintosh)
