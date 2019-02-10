@@ -32,4 +32,10 @@ Steps to execute the script:
 8. // Ask Ali
 9. For the best results and proper vizualization of charts, we recommend using Spider or Jupyter notebook.
 
+Deliverables:
+1. Project Report
+2. Source Code along with the ReadMe File.
+3. Results in HTML format
+4. Presentation
+
 For further questions, feel free to reach us at the e-mail address provided above.
