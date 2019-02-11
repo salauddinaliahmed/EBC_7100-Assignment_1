@@ -25,9 +25,14 @@ The code structure is as follows:
 Steps to execute the script:
 1. Install Python 3 (https://www.python.org/download/releases/3.0/) or use homebrew if you are a mac user
 2. Ensure Python 3 installed properly using the following command 
-3. install -python
-4. You should see the output as below:
-6. Download the "".py file to your local machine
+3. install - python
+4. To test if Python is successfully installed, type python on terminal/console. 
+   "You should see the output as below:
+    Python 3.7.2 (default, Dec 29 2018, 00:00:04) 
+    [Clang 4.0.1 (tags/RELEASE_401/final)] :: Anaconda, Inc. on darwin
+    Type "help", "copyright", "credits" or "license" for more information.
+    >>>" 
+6. Download the "assignment1".py file to your local machine
 7. Open command prompt (Windows) or terminal (macintosh)
 8. Enter the command - "python <path_of_the_downloaded py file>"
 9. For the best results and proper vizualization of charts, we recommend using Spider or Jupyter notebook.
