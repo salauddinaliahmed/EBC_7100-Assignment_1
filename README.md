@@ -36,7 +36,7 @@ Steps to execute the script:
 7. Open command prompt (Windows) or terminal (macintosh)
 8. Enter the command - "python <path_of_the_downloaded py file>"
 9. For the best results and proper vizualization of charts, we recommend using Spider or Jupyter notebook.
-   Copy and paste the program in a python3 kernel and run the cell. 
+   Download the program and open it with Jupyter notebook and run the cell.  
 
 Deliverables:
 1. Project Report
