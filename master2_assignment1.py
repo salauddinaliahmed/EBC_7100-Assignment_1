@@ -9,6 +9,7 @@ author Jiaxi Chen (300011851), Salauddin Ali Ahmed (300031318), Vrushti Buch (88
 """
 #Importing required libraries. We have used NLTK, ScikitLearn and basic python libraries
 #to perform supervised machine learning.
+#Syntaxes of the machine learning classifiers and details about parameters is taken from Scikit learn's and nltk's official documentataion. 
 import nltk
 import pandas as pd
 from nltk.corpus import gutenberg
@@ -53,6 +54,7 @@ def accuracy_plot(bow_score, tfidf_score, classifier_used):
     plt.show()
     
 #Function to plot learning curve wrt train size
+#The following function was taken from: https://scikit-learn.org/stable/auto_examples/model_selection/plot_learning_curve.html and modified 
 def learning_curve_graph(clf, word_vector):   
     train_sizes, train_scores, valid_scores = learning_curve(clf, word_vector, df_y, train_sizes=[10,50, 80, 110, 150, 250], cv=10)
     train_scores_mean = np.mean(train_scores, axis=1)
@@ -76,6 +78,7 @@ def learning_curve_graph(clf, word_vector):
     plt.show()
 
 #Validation curve for SVM
+# This code snippet is taken from:https://scikit-learn.org/stable/auto_examples/model_selection/plot_validation_curve.html and modified.
 def validation_curve_graph(vect):
     X, y = vect, df_y
     cv = StratifiedKFold(10)
@@ -123,6 +126,8 @@ def generate_error_eval(classfier, train_vector, target_variables, kfolds):
    return confu_mat
 
 #Function for confusion matrix
+#The following function is taken from: 
+#https://scikit-learn.org/stable/auto_examples/model_selection/plot_confusion_matrix.html#sphx-glr-auto-examples-model-selection-plot-confusion-matrix-py
 def plot_confusion_matrix(cm, classes,
                          normalize=False,
                          title='Confusion matrix',
