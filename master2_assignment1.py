@@ -3,7 +3,6 @@
 """
 Created on Wed Feb  6 18:37:15 2019
 EBC 7100 Assignment 1 - Text Classification using NLTK with Python for supervised learning
-
 author Jiaxi Chen (300011851), Salauddin Ali Ahmed (300031318), Vrushti Buch (8844799)
 
 """
@@ -14,18 +13,13 @@ import nltk
 import pandas as pd
 from nltk.corpus import gutenberg
 import random
-from nltk.tokenize import RegexpTokenizer, sent_tokenize
 from nltk.corpus import stopwords
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.utils import shuffle
 from sklearn.model_selection import train_test_split
-from sklearn import svm, metrics, tree
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.model_selection import cross_validate
 import numpy as np
-from sklearn.model_selection import KFold
 from sklearn.model_selection import cross_val_score
-from itertools import cycle
 from sklearn.model_selection import StratifiedKFold
 from sklearn.model_selection import validation_curve
 from sklearn.model_selection import cross_val_predict
@@ -36,13 +30,13 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import learning_curve
 from collections import Counter
 #Following libraries are used to supress warnings, the details can be found at
-#: https://blog.csdn.net/Homewm/article/details/84524558 
+#https://blog.csdn.net/Homewm/article/details/84524558 
 import warnings 
 warnings.filterwarnings("ignore", category=FutureWarning, module="sklearn", lineno=196)
 
 target_names = ['0: KJV-Bible', '1: Moby-Dick', '2: Edgeworth']
 
-#---------------------Defining the functions--------------------
+#---------------------Defining the functions--------------------#
 #Function to plot accuracies for each vector
 def accuracy_plot(bow_score, tfidf_score, classifier_used):    
     plt.plot(list(range(1,k_folds+1)),list(bow_score),'b--', list(range(1,k_folds+1)),list(tfidf_score), 'r--')
@@ -53,8 +47,8 @@ def accuracy_plot(bow_score, tfidf_score, classifier_used):
     plt.ylabel('Accuracy')
     plt.show()
     
-#Function to plot learning curve wrt train size
-#The following function was taken from: https://scikit-learn.org/stable/auto_examples/model_selection/plot_learning_curve.html and modified 
+#Function to plot learning curve wrt train size. The following function was taken from
+#https://scikit-learn.org/stable/auto_examples/model_selection/plot_learning_curve.html and modified 
 def learning_curve_graph(clf, word_vector):   
     train_sizes, train_scores, valid_scores = learning_curve(clf, word_vector, df_y, train_sizes=[10,50, 80, 110, 150, 250], cv=10)
     train_scores_mean = np.mean(train_scores, axis=1)
@@ -78,7 +72,8 @@ def learning_curve_graph(clf, word_vector):
     plt.show()
 
 #Validation curve for SVM
-# This code snippet is taken from:https://scikit-learn.org/stable/auto_examples/model_selection/plot_validation_curve.html and modified.
+#This code snippet is taken from
+#https://scikit-learn.org/stable/auto_examples/model_selection/plot_validation_curve.html and modified
 def validation_curve_graph(vect):
     X, y = vect, df_y
     cv = StratifiedKFold(10)
@@ -161,7 +156,7 @@ def plot_confusion_matrix(cm, classes,
    plt.ylabel('True label')
    plt.xlabel('Predicted label')
    plt.tight_layout()
-#---------------------End of functions--------------------
+#---------------------End of functions--------------------#
 
 #Selecting the dataset
 book_1 = gutenberg.raw('bible-kjv.txt').lower()
@@ -174,7 +169,7 @@ book_list = [book_1, book_2, book_3]
 master_list = [[],[],[]]
 size_of_books = []
 
-# Dividing each book into documents of 30 sentences. appending them to *master_list*. 
+#Dividing each book into documents of 30 sentences. appending them to *master_list*. 
 for book in book_list:
     n = 0
     #Tokenzing sentences of each book
@@ -256,7 +251,7 @@ frames = [sample_book1, sample_book2, sample_book3]
 complete_sample = pd.concat(frames, ignore_index=True)
 complete_sample = shuffle(complete_sample)
 complete_sample = complete_sample.reset_index(drop=True)
-#--------------------end of pre-processing-------------------
+#--------------------end of pre-processing-------------------#
 
 #Seperating Labels and Data from the complete sample.
 df_x = (complete_sample['Data'])
@@ -305,7 +300,7 @@ print("KNN accuracy for TFIDF: ", "{:.3%}".format(clf_knn.score(x_test, y_test))
 #Ten-fold cross-validation
 k_folds = 10
 
-#-------------------- BOW Cross Validation -------------------
+#-------------------- BOW Cross Validation -------------------#
 #Performing cross validation for SVM BOW
 svm_bow_scores = cross_val_score(estimator=clf_svm, 
                         X=bow_vector, 
@@ -322,7 +317,7 @@ knn_bow_scores = cross_val_score(estimator=clf_knn,
                         y=df_y, 
                         cv=k_folds)
 
-#-------------------- TFIDF Cross Validation -------------------
+#-------------------- TFIDF Cross Validation -------------------#
 #Performing cross validation for SVM TFIDF
 svm_tfidf_scores = cross_val_score(estimator=clf_svm, 
                         X=tfidf_vector, 
@@ -361,13 +356,12 @@ print("Accuracy plot for both TFIDF and BOW")
 accuracy_plot(svm_bow_scores, svm_tfidf_scores, "Support Vector Machine - SVM")
 print ("===============================")
 
-
 # Decision Tree Plots and 10 fold validation
 print ("===============================")
 print('cross-validation accuracy scores BOW Dtree: %s' % dtree_bow_scores)
 print('cross-validation mean accuracy and standard deviation: %.3f +/- %.3f' % (np.mean(dtree_bow_scores), np.std(dtree_bow_scores)))
 print ("Validation Curve for Dtree BOW")
-#validation_curve_graph(bow_vector) #
+#validation_curve_graph(bow_vector)
 print ("-------------------------------")
 print ("Learning Curve for Dtree BOW")
 learning_curve_graph(clf_dtree, bow_vector)
@@ -376,7 +370,7 @@ print ("===============================")
 print('cross-validation accuracy scores TFIDF Dtree: %s' % dtree_tfidf_scores)
 print('cross-validation accuracy: %.3f +/- %.3f' % (np.mean(dtree_tfidf_scores), np.std(dtree_tfidf_scores)))
 print ("Validation Curve for Dtree BOW")
-#validation_curve_graph(tfidf_vector) #
+#validation_curve_graph(tfidf_vector)
 print ("-------------------------------")
 print ("Learning Curve for Dtree TFIDF")
 learning_curve_graph(clf_dtree, tfidf_vector)
@@ -385,12 +379,12 @@ print("Accuracy plot for both Dtree TFIDF and BOW")
 accuracy_plot(dtree_bow_scores, dtree_tfidf_scores, "Decision Tree")
 print ("===============================")
 
-#K Nearest Neighbour Plots and 10 fold cross validation
+#K-Nearest Neighbour Plots and 10 fold cross validation
 print ("===============================")
 print('cross-validation accuracy scores BOW KNN: %s' % knn_bow_scores)
 print('cross-validation mean accuracy and standard deviation: %.3f +/- %.3f' % (np.mean(knn_bow_scores), np.std(knn_bow_scores)))
 print ("Validation Curve for KNN BOW")
-#validation_curve_graph(bow_vector) #
+#validation_curve_graph(bow_vector)
 print ("-------------------------------")
 print ("Learning Curve for KNN BOW")
 learning_curve_graph(clf_knn, bow_vector)
@@ -399,7 +393,7 @@ print ("===============================")
 print('cross-validation accuracy scores TFIDF KNN: %s' % knn_tfidf_scores)
 print('cross-validation accuracy: %.3f +/- %.3f' % (np.mean(knn_tfidf_scores), np.std(knn_tfidf_scores)))
 print ("Validation Curve for KNN BOW")
-#validation_curve_graph(tfidf_vector) #
+#validation_curve_graph(tfidf_vector)
 print ("-------------------------------")
 print ("Learning Curve for KNN TFIDF")
 learning_curve_graph(clf_knn, tfidf_vector)
@@ -429,7 +423,7 @@ print ("Error Evaluation for KNN BOW")
 knn_bow_confu_mat = generate_error_eval(clf_knn, bow_vector, df_y, k_folds)
 
 # Plotting Confusion matrix for all the models and 2 vectors (BOW and TFIDF)
-#### SVM TFIDF ###
+#### SVM TFIDF ####
 # Plot non-normalized confusion matrix
 
 print("Graphs - SVM TFIDF")
@@ -437,83 +431,83 @@ plt.figure()
 plot_confusion_matrix(svm_tfidf_confu_mat, classes=target_names,
                      title='Confusion matrix, without normalization')
 
-# Plot normalized confusion matrix
+#Plot normalized confusion matrix
 plt.figure()
 plot_confusion_matrix(svm_tfidf_confu_mat, classes=target_names, normalize=True,
                      title='Normalized confusion matrix')
 
 plt.show()
 
-#### SVM BOW ###
+#### SVM BOW ####
 
 print("Graphs - SVM BOW")
 
-# Plot non-normalized confusion matrix
+#Plot non-normalized confusion matrix
 plt.figure()
 plot_confusion_matrix(svm_bow_confu_mat, classes=target_names,
                      title='Confusion matrix, without normalization')
 
-# Plot normalized confusion matrix
+#Plot normalized confusion matrix
 plt.figure()
 plot_confusion_matrix(svm_bow_confu_mat, classes=target_names, normalize=True,
                      title='Normalized confusion matrix')
 
 plt.show()
 
-#### DTREE TFIDF ###
+#### DTREE TFIDF ####
 
 print("Graphs - DTREE TFIDF")
 
-# Plot non-normalized confusion matrix
+#Plot non-normalized confusion matrix
 plt.figure()
 plot_confusion_matrix(dtree_tfidf_confu_mat, classes=target_names,
                      title='Confusion matrix, without normalization')
 
-# Plot normalized confusion matrix
+#Plot normalized confusion matrix
 plt.figure()
 plot_confusion_matrix(dtree_tfidf_confu_mat, classes=target_names, normalize=True,
                      title='Normalized confusion matrix')
 
 plt.show()
 
-#### DTREE BOW ###
+#### DTREE BOW ####
 print("Graphs - DTREE BOW")
 
 plt.figure()
 plot_confusion_matrix(dtree_bow_confu_mat, classes=target_names,
                      title='Confusion matrix, without normalization')
 
-# Plot normalized confusion matrix
+#Plot normalized confusion matrix
 plt.figure()
 plot_confusion_matrix(dtree_bow_confu_mat, classes=target_names, normalize=True,
                      title='Normalized confusion matrix')
 
 plt.show()
 
-#### KNN TFIDF ###
+#### KNN TFIDF ####
 
 print("Graphs - KNN TFIDF")
 
-# Plot non-normalized confusion matrix
+#Plot non-normalized confusion matrix
 plt.figure()
 plot_confusion_matrix(knn_tfidf_confu_mat, classes=target_names,
                     title='Confusion matrix, without normalization')
 
-# Plot normalized confusion matrix
+#Plot normalized confusion matrix
 plt.figure()
 plot_confusion_matrix(knn_tfidf_confu_mat, classes=target_names, normalize=True,
                     title='Normalized confusion matrix')
 
 plt.show()
 
-#### KNN BOW ###
+#### KNN BOW ####
 print("Graphs - KNN BOW")
 
 plt.figure()
 plot_confusion_matrix(knn_bow_confu_mat, classes=target_names,
                     title='Confusion matrix, without normalization')
 
-# Plot normalized confusion matrix
+#Plot normalized confusion matrix
 plt.figure()
 plot_confusion_matrix(knn_bow_confu_mat, classes=target_names, normalize=True,
                     title='Normalized confusion matrix')
