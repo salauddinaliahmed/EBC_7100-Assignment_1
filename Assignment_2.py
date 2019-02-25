@@ -80,15 +80,15 @@ for each_list in book3_words:
 #Selecting 150 most common words.
 most_common_book1 = []
 for each_doc in clean_book1_words:
-    a = Counter(each_doc[0]).most_common(150)
+    a = Counter(each_doc).most_common(150)
     most_common_book1.append(" ".join(i[0] for i in a))
 most_common_book2 = []
 for each_doc in clean_book2_words:
-    a = Counter(each_doc[0]).most_common(150)
+    a = Counter(each_doc).most_common(150)
     most_common_book2.append(" ".join(i[0] for i in a))
 most_common_book3 = []
 for each_doc in clean_book3_words:
-    a = Counter(each_doc[0]).most_common(150)
+    a = Counter(each_doc).most_common(150)
     most_common_book3.append(" ".join(i[0] for i in a))
 #Once the samples are ready, we are converting it into dataframe for training the model.
 sample_book1 = pd.DataFrame(most_common_book1)
@@ -151,6 +151,10 @@ color = ['g']
 #Aggolomerative clustering
 from sklearn.cluster import AgglomerativeClustering
 agg_cluster = AgglomerativeClustering(n_clusters = 3).fit(X)
+from scipy.cluster.hierarchy import dendrogram, linkage
+data = agg_cluster.children_
+Z = linkage(data)
+dendrogram(Z)
 
 #Dendrogram
 from scipy.cluster.hierarchy import linkage
