@@ -29,6 +29,7 @@ from scipy.cluster.hierarchy import dendrogram, linkage
 #---------- 3D plot
 import plotly
 import plotly.graph_objs as go
+
 def getTrace(x, y, z, c, label, s=2):
     trace_points = go.Scatter3d(
     x=x, y=y, z=z,
@@ -51,6 +52,20 @@ def showGraph(title, x_colname, x_range, y_colname, y_range, z_colname, z_range,
     fig = go.Figure(data=traces, layout=layout)
     plotly.offline.plot(fig)
 
+def plot3DScatter(kmeans, y_kmeans, vector):
+    t1 = getTrace(vector[y_kmeans == 0, 0], vector[y_kmeans == 0, 1], vector[y_kmeans == 0, 2], s= 4, c='red', label = '1') #match with red=1 initial class
+    t2 = getTrace(vector[y_kmeans == 1, 0], vector[y_kmeans == 1, 1], vector[y_kmeans == 1, 2], s= 4, c='black', label = '2') #match with black=3 initial class
+    t3 = getTrace(vector[y_kmeans == 2, 0], vector[y_kmeans == 2, 1], vector[y_kmeans == 2, 2], s= 4, c='blue', label = '3') #match with blue=2 initial class
+    x=vector[:,0]
+    y=vector[:,1]
+    z=vector[:,2]
+    centroids = getTrace(kmeans.cluster_centers_[:, 0], kmeans.cluster_centers_[:, 1], kmeans.cluster_centers_[:, 2], s= 8, c = 'yellow', label='Centroids')
+    showGraph("Book Authors", "Bible", [min(x),max(x)], "Moby_Dick", [min(y),max(y)], "Parents", [min(z)-1,max(z)], [t1,t2,t3,centroids])
+
+
+
+### Start of Calculating and Ploting PCA values. #########
+
 def calcPCA(pca_num_components, vector):
     # Standardizing the features
     pca_comp = TruncatedSVD(n_components=450)
@@ -69,6 +84,8 @@ def pca_Plot(vector):
     plt.title('Authorship dataset PCA scores')
     plt.show()
     
+### Start of Calculating and Ploting Kmeans Elbow curve. ######### 
+    
 def calcKnnElbow(elbowLimit, vector):
     distortions = []
     K = range(1,elbowLimit)
@@ -82,17 +99,10 @@ def calcKnnElbow(elbowLimit, vector):
     plt.ylabel('Sum_of_squared_distances')
     plt.title('Elbow Method For Optimal k')
     plt.show()
-    
-def plot3DScatter(kmeans, y_kmeans, vector):
-    t1 = getTrace(vector[y_kmeans == 0, 0], vector[y_kmeans == 0, 1], vector[y_kmeans == 0, 2], s= 4, c='red', label = '1') #match with red=1 initial class
-    t2 = getTrace(vector[y_kmeans == 1, 0], vector[y_kmeans == 1, 1], vector[y_kmeans == 1, 2], s= 4, c='black', label = '2') #match with black=3 initial class
-    t3 = getTrace(vector[y_kmeans == 2, 0], vector[y_kmeans == 2, 1], vector[y_kmeans == 2, 2], s= 4, c='blue', label = '3') #match with blue=2 initial class
-    x=vector[:,0]
-    y=vector[:,1]
-    z=vector[:,2]
-    centroids = getTrace(kmeans.cluster_centers_[:, 0], kmeans.cluster_centers_[:, 1], kmeans.cluster_centers_[:, 2], s= 8, c = 'yellow', label='Centroids')
-    showGraph("Book Authors", "Bible", [min(x),max(x)], "Moby_Dick", [min(y),max(y)], "Parents", [min(z)-1,max(z)], [t1,t2,t3,centroids])
-    
+  
+ 
+### Start of Calculating and Ploting Kmeans Silhouette plots and scores for different k values. ######### 
+     
 def knnErrorEval(vector, clustering_model, y_kmeans):
     labels_color_map = {
         0: '#20b2aa', 1: '#ff7373', 2: '#ffe4e1'
@@ -119,6 +129,9 @@ def knnErrorEval(vector, clustering_model, y_kmeans):
     print("t-SNE")
     plt.show()
     """
+    
+### Start of Calculating and Ploting Aggolomerative Cluster plot. ######### 
+     
 def agg_cluster_graph(X,y, cluster, text):
     X_plot = X
     df_y =list(y)
@@ -151,10 +164,15 @@ def agg_cluster_graph(X,y, cluster, text):
     plt.title(text)
     plt.show()
 
+### Start of Calculating and Ploting GMM cluster plot. ######### 
+
 import seaborn as sns
 def gmmErrorEval(gmm, vector):
     sns.distplot(vector, bins=20,kde=False,color=['g','r','b'])
     
+
+### Start of Calculating and Ploting dendrogram and heatmap. ######### 
+
 from scipy.cluster.hierarchy import dendrogram, linkage
 def aggErrorEval(aggCluster, vector):
     data = aggCluster.children_
@@ -226,6 +244,8 @@ def plotHeatMap(data):
     plt.show()
     
 
+### Start of Calculating and Ploting Kmeans Silouette for different k values. ######### 
+
 from sklearn.datasets import make_blobs
 from sklearn.cluster import KMeans
 #from sklearn.metrics import silhouette_samples, silhouette_score, homogeneity_completeness_v_measure, homogeneity_score, 
@@ -234,7 +254,6 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import numpy as np
 
-#print(__doc__)
 def plotSill(vector):
     range_n_clusters = [2, 3, 4, 5, 6]
 
@@ -325,6 +344,10 @@ def plotSill(vector):
               "The average silhouette_score is :", silhouette_avg)
         print ("\n")
 
+
+# Evaluation metrics calculations #########
+        
+        
 from sklearn.metrics import cohen_kappa_score
 def getKappa(label, clusterModel):
     return cohen_kappa_score(list(label),clusterModel.labels_, weights="linear")
@@ -345,22 +368,7 @@ def evaluate_clusters(labels, clusters):
     return metrics.homogeneity_score(labels, clusters),metrics.completeness_score(labels, clusters), metrics.v_measure_score(labels, clusters),metrics.adjusted_rand_score(labels, clusters),metrics.adjusted_mutual_info_score(labels,  clusters)
     
 
-"""
-def plot_eval_comp(eval_method):
-    fig, ax = plt.subplots()
-    ind = [1,2,3]
-    pm, pc, pn = plt.bar(ind, eval_method)
-    pm.set_facecolor('r')
-    pc.set_facecolor('g')
-    pn.set_facecolor('b')
-    ax.set_xticks(ind)
-    ax.set_xticklabels(['Kmeans', 'EM-GMM', 'Aggolomerative'])
-    ax.set_ylim([-1, 1])
-    ax.set_ylabel('Score')
-    ax.set_title('Models')
-
-    plt.show()
-"""
+##### Plotting all evaluation metrics
 
 def plot_eval_comp(eval_method_bow, eval_method_tfidf, graph_title):
     n_groups = 3

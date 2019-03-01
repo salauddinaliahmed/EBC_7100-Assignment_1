@@ -95,6 +95,9 @@ def preprocess(topwordsnum):
             most_common_book3.append(" ".join(i[0] for i in a))
         return most_common_book1, most_common_book2, most_common_book3
    
+    
+ #### Collocations - bigrams. 
+   
     def most_common_bigrams():
         most_common_book1 = []
         for each_doc in clean_book1_words:

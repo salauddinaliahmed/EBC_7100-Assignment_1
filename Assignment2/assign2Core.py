@@ -21,9 +21,14 @@ from sklearn.metrics import silhouette_score
 #static vars
 numClusters = 3
 
+#Preprocessing and error evaluation
+words150 = 150
+#words10 = 10
+#coll = "colloc"
+
 
 #Pre process with 150 words per document
-bow_vector, tfidf_vector, df_x, df_y = preprocess(150)
+bow_vector, tfidf_vector, df_x, df_y = preprocess(words150)
 
 
 reduced_data_bow, var_ratio = calcPCA(numClusters, bow_vector)
