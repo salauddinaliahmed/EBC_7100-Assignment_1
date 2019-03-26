@@ -18,6 +18,7 @@ from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
 
 
+from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 #static vars
 numClusters = 3
 
@@ -53,8 +54,21 @@ pca_Plot(tfidf_vector)
 kmeans_bow_model = KMeans(n_clusters=numClusters,max_iter=300,precompute_distances="auto",n_jobs=-1).fit(reduced_data_bow)
 kmeans_tfidf_model = KMeans(n_clusters=numClusters,max_iter=300,precompute_distances="auto",n_jobs=-1).fit(reduced_data_tfidf)
 
+#print ("Unit Test::::::")
+#word = 'That he would grant you, according to the riches of his glory to be strengthened with might by his Spirit in the inner man; That Christ may dwell in your hearts by faith; that ye, being rooted and grounded in love.'
+word = [df_x[1]]
+cv_bow = CountVectorizer(lowercase=False)
+#print (bow_vector)
+#kmeans_bow = kmeans_bow_model.predict(bow_vector.toarray())
+#print (kmeans_bow)
+predict_word = cv_bow.fit_transform(word)
+
+print ("This is the end of unit testing.")
 kmeans_bow = KMeans(n_clusters=numClusters,max_iter=300,precompute_distances="auto",n_jobs=-1).fit_predict(reduced_data_bow)
+kmeans_test = KMeans(n_clusters=numClusters,max_iter=300,precompute_distances="auto",n_jobs=-1).fit(reduced_data_bow)
+ 
 kmeans_tfidf = KMeans(n_clusters=numClusters,max_iter=300,precompute_distances="auto",n_jobs=-1).fit_predict(reduced_data_tfidf)
+print ('This is the predicted cluster of the part :',kmeans_test.predict(predict_word))
 
 print("Elbow for Knn BOW:")
 calcKnnElbow(8, reduced_data_bow)

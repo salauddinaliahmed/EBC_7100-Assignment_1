@@ -68,7 +68,7 @@ def plot3DScatter(kmeans, y_kmeans, vector):
 
 def calcPCA(pca_num_components, vector):
     # Standardizing the features
-    pca_comp = TruncatedSVD(n_components=450)
+    pca_comp = TruncatedSVD(n_components=150)
     reduced_data = pca_comp.fit_transform(vector)
     return reduced_data, pca_comp.explained_variance_ratio_
 
